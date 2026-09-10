@@ -47,15 +47,12 @@ jobs:
       - name: Get branch name
         id: branch-name
         uses: tj-actions/branch-names@v9.0.2
+        with:
+          replace_slashes_with_hyphens: 'true'
 
       - name: Upload artifact
-        uses: wangyucode/sftp-upload-action@v2.0.4
+        uses: actions/upload-artifact@v7
         with:
-          host: ${{ secrets.NICKCHAN_FTP_HOST }}
-          port: ${{ secrets.NICKCHAN_FTP_PORT }}
-          username: palera1n
-          password: ${{ secrets.NICKCHAN_FTP_PASS }}
-          forceUpload: true
-          dryRun: false
-          localDir: 'upload'
-          remoteDir: "/palera1n/artifacts/kpf/${{ steps.branch-name.outputs.ref_branch || github.ref }}"
+          name: checkra1n-kpf-pongo-${{ steps.branch-name.outputs.ref_branch || github.ref_name }}
+          path: upload/
+          if-no-files-found: error
